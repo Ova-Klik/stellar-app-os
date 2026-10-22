@@ -35,11 +35,7 @@ export function isValidSponsorWallet(wallet: string): boolean {
   return STELLAR_ADDRESS_PATTERN.test(wallet.trim());
 }
 
-function optionalString(
-  value: unknown,
-  field: string,
-  maxLength: number
-): string | undefined {
+function optionalString(value: unknown, field: string, maxLength: number): string | undefined {
   if (value === undefined || value === null) return undefined;
   if (typeof value !== 'string') {
     throw new CommunityForestError(`${field} must be a string`);
@@ -102,7 +98,11 @@ export function parseCreateCommunityForestInput(
 
   return {
     name,
-    description: optionalString(body.description, 'description', COMMUNITY_FOREST_DESCRIPTION_MAX_LENGTH),
+    description: optionalString(
+      body.description,
+      'description',
+      COMMUNITY_FOREST_DESCRIPTION_MAX_LENGTH
+    ),
     baseProjectId,
     organisationId,
     organisationContactEmail,
@@ -130,7 +130,11 @@ export function parseJoinCommunityForestInput(
 
   return {
     sponsorWallet,
-    displayName: optionalString(body.displayName, 'displayName', COMMUNITY_FOREST_DISPLAY_NAME_MAX_LENGTH),
+    displayName: optionalString(
+      body.displayName,
+      'displayName',
+      COMMUNITY_FOREST_DISPLAY_NAME_MAX_LENGTH
+    ),
   };
 }
 

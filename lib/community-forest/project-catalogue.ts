@@ -10,17 +10,7 @@
 
 import { mockAdminProjectDetails } from '@/lib/api/mock/adminProjectDetails';
 import { mockCarbonProjects } from '@/lib/api/mock/carbonProjects';
-
-/** The parts of an existing project a community forest inherits. */
-export interface CommunityForestBaseProject {
-  id: string;
-  name: string;
-  description: string;
-  type: string;
-  location: string;
-  country: string | null;
-  verificationStatus: string | null;
-}
+import type { CommunityForestBaseProject } from './types';
 
 /** Every project a community forest can be built on. */
 export function listBaseProjects(): CommunityForestBaseProject[] {
@@ -58,8 +48,7 @@ export function findBaseProject(idOrSlug: string): CommunityForestBaseProject | 
   if (!needle) return null;
 
   const adminProject = mockAdminProjectDetails.find(
-    (project) =>
-      project.id.toLowerCase() === needle || project.slug.toLowerCase() === needle
+    (project) => project.id.toLowerCase() === needle || project.slug.toLowerCase() === needle
   );
 
   if (adminProject) {
@@ -74,9 +63,7 @@ export function findBaseProject(idOrSlug: string): CommunityForestBaseProject | 
     };
   }
 
-  const carbonProject = mockCarbonProjects.find(
-    (project) => project.id.toLowerCase() === needle
-  );
+  const carbonProject = mockCarbonProjects.find((project) => project.id.toLowerCase() === needle);
 
   if (carbonProject) {
     return {

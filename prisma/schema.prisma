@@ -248,3 +248,68 @@ model ProjectBufferZone {
   @@index([deforestationAlert])
   @@map("project_buffer_zones")
 }
+
+// ── Community forests ────────────────────────────────────────────────────────
+//
+// Named projects several sponsors pool their sponsorship into, with a shared
+// impact dashboard, a group leaderboard and milestone celebrations
+// (Issue #1646). Migration: db/migrations/028_create_community_forests.sql
+
+model CommunityForestProject {
+  id             BigInt   @id @default(autoincrement())
+  name           String   @db.VarChar(80)
+  description    String?  @db.Text
+  baseProjectId  String   @map("base_project_id") @db.VarChar(120)
+  createdByKind  String   @map("created_by_kind") @db.VarChar(20) // admin | organisation
+  createdById    String   @map("created_by_id") @db.VarChar(120)
+  status         String   @default("active") @db.VarChar(20) // active | archived
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  members   CommunityForestMember[]
+  trees     CommunityForestTree[]
+  milestones CommunityForestMilestone[]
+
+  @@map("community_forest_projects")
+}
+
+model CommunityForestMember {
+  projectId      BigInt   @map("project_id")
+  sponsorWallet  String   @map("sponsor_wallet") @db.VarChar(56)
+  displayName    String?  @map("display_name") @db.VarChar(80)
+  role           String   @default("sponsor") @db.VarChar(20) // creator | sponsor
+  joinedAt       DateTime @default(now()) @map("joined_at")
+
+  project CommunityForestProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, sponsorWallet])
+  @@index([sponsorWallet])
+  @@map("community_forest_members")
+}
+
+model CommunityForestTree {
+  projectId     BigInt   @map("project_id")
+  treeId        BigInt   @map("tree_id")
+  contributedBy String   @map("contributed_by") @db.VarChar(56)
+  contributedAt DateTime @default(now()) @map("contributed_at")
+
+  project CommunityForestProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@id([projectId, treeId])
+  @@unique([treeId])
+  @@map("community_forest_trees")
+}
+
+model CommunityForestMilestone {
+  id                 BigInt   @id @default(autoincrement())
+  projectId          BigInt   @map("project_id")
+  thresholdTrees     Int     @map("threshold_trees")
+  title              String  @db.VarChar(120)
+  treesAtCelebration Int     @map("trees_at_celebration")
+  celebratedAt       DateTime @default(now()) @map("celebrated_at")
+
+  project CommunityForestProject @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, thresholdTrees])
+  @@map("community_forest_milestones")
+}

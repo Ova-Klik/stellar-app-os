@@ -192,6 +192,11 @@ function ProjectsContent(): JSX.Element {
             </Text>
           </div>
           <div className="flex items-center gap-2">
+            <Link href="/community-forests">
+              <Button variant="outline" size="sm" className="text-xs">
+                Community Forests 🌳
+              </Button>
+            </Link>
             <Link href="/projects/compare">
               <Button variant="outline" size="sm" className="text-xs">
                 Compare Tree Sponsorships ⚖

@@ -23,14 +23,13 @@ import type {
 export const PLANTED_TREE_STATUSES = ['planted', 'verified', 'completed'] as const;
 
 /** The configured milestone ladder every community forest celebrates. */
-export const COMMUNITY_FOREST_MILESTONE_THRESHOLDS: readonly CommunityForestMilestoneThreshold[] =
-  [
-    { thresholdTrees: 100, title: '100 trees planted' },
-    { thresholdTrees: 500, title: '500 trees planted' },
-    { thresholdTrees: 1000, title: '1,000 trees planted' },
-    { thresholdTrees: 5000, title: '5,000 trees planted' },
-    { thresholdTrees: 10000, title: '10,000 trees planted' },
-  ];
+export const COMMUNITY_FOREST_MILESTONE_THRESHOLDS: readonly CommunityForestMilestoneThreshold[] = [
+  { thresholdTrees: 100, title: '100 trees planted' },
+  { thresholdTrees: 500, title: '500 trees planted' },
+  { thresholdTrees: 1000, title: '1,000 trees planted' },
+  { thresholdTrees: 5000, title: '5,000 trees planted' },
+  { thresholdTrees: 10000, title: '10,000 trees planted' },
+];
 
 function toTreeCount(value: number | null | undefined): number {
   if (typeof value !== 'number' || !Number.isFinite(value)) return 0;
@@ -72,8 +71,7 @@ export function getNextMilestoneThreshold(
 
   return (
     COMMUNITY_FOREST_MILESTONE_THRESHOLDS.find(
-      (threshold) =>
-        threshold.thresholdTrees > planted && !celebrated.has(threshold.thresholdTrees)
+      (threshold) => threshold.thresholdTrees > planted && !celebrated.has(threshold.thresholdTrees)
     ) ?? null
   );
 }

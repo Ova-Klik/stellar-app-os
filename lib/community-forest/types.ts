@@ -77,6 +77,28 @@ export interface CommunityForestLeaderboardEntry {
   isTied: boolean;
 }
 
+/** The parts of an existing platform project a community forest inherits. */
+export interface CommunityForestBaseProject {
+  id: string;
+  name: string;
+  description: string;
+  type: string;
+  location: string;
+  country: string | null;
+  verificationStatus: string | null;
+}
+
+/** A community forest project as shown in listings and on the detail page. */
+export interface CommunityForestSummary extends CommunityForestProject {
+  /** The platform project the community forest grows from. */
+  baseProject: CommunityForestBaseProject | null;
+  totalTrees: number;
+  plantedTrees: number;
+  co2KgPerYear: number;
+  sponsorCount: number;
+  milestones: CommunityForestMilestoneProgress;
+}
+
 /** A configured milestone threshold, expressed in trees planted. */
 export interface CommunityForestMilestoneThreshold {
   thresholdTrees: number;
